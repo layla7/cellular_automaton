@@ -2,5 +2,5 @@
 typedef uint64_t uint_c;
 
 // function definitions
-void displayValue(uint_c state, int statelen);
-int algorithm(uint_c state, uint8_t rule, int statelen, int wrap);
+void algorithm(uint_c state, uint8_t rule, int statelen, int generations, int wrap, uint_c *output);
+int calculateGenerations(int statelen);

@@ -6,13 +6,12 @@
 
 // algorithm function to perform the evolution algorithm
 // state uses custom datatype to make changing the width simpler
-int algorithm(uint_c state, uint8_t rule, int statelen, int wrap)
+void algorithm(uint_c state, uint8_t rule, int statelen, int generations, int wrap, uint_c *output)
 {
-	int generations = statelen / 2; // set the number of generations
 
 	for (int generation = 0; generation < generations; generation++)
 	{
-		displayValue(state, statelen); // display the current state
+		output[generation] = state;
 		// define some varibales;
 		uint8_t lastBit;
 		uint8_t nextBit;
@@ -61,24 +60,10 @@ int algorithm(uint_c state, uint8_t rule, int statelen, int wrap)
 		}
 		state = nextState;
 	}
-	return 0;
+	// return 0;
 }
 
-// function to display a binary value
-void displayValue(uint_c state, int statelen)
+int calculateGenerations(int statelen)
 {
-	// loop through each bit, if the bit is 1: print a '0' (i.e. filled in), if the bit is 0, print a '.' (i.e. empty)
-	for (int i = 0; i < statelen; i++)
-	{
-		uint8_t s = state >> i;
-		if (s % 2)
-		{
-			printf("0");
-		}
-		else
-		{
-			printf(".");
-		}
-	}
-	printf("\n");
+	return statelen / 2;
 }
