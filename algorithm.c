@@ -1,7 +1,8 @@
 #include <stdio.h>
+#include <stdint.h>
 #include "algorithm.h"
 
-int algorithm(__uint32_t state, __uint8_t rule, int statelen, int wrap)
+int algorithm(uint32_t state, uint8_t rule, int statelen, int wrap)
 {
 	int generations = statelen / 2;
 	// int generations = 2;
@@ -9,12 +10,12 @@ int algorithm(__uint32_t state, __uint8_t rule, int statelen, int wrap)
 	for (int generation = 0; generation < generations; generation++)
 	{
 		displayValue(state, statelen);
-		__uint8_t lastBit;
-		__uint8_t nextBit;
-		__uint8_t currBit;
-		__uint8_t firstBit;
-		__uint8_t bits;
-		__uint32_t nextState = 0U;
+		uint8_t lastBit;
+		uint8_t nextBit;
+		uint8_t currBit;
+		uint8_t firstBit;
+		uint8_t bits;
+		uint32_t nextState = 0U;
 
 		if (wrap)
 			firstBit = state % 2;
@@ -47,12 +48,12 @@ int algorithm(__uint32_t state, __uint8_t rule, int statelen, int wrap)
 				state = state >> 1;
 			}
 
-			__uint8_t testLastBit = lastBit << 2;
-			__uint8_t testCurrBit = currBit << 1;
+			uint8_t testLastBit = lastBit << 2;
+			uint8_t testCurrBit = currBit << 1;
 
 			bits = ((lastBit << 2) + (currBit << 1) + nextBit);
 
-			__uint8_t next = (rule >> bits) % 2;
+			uint8_t next = (rule >> bits) % 2;
 			nextState += (next << i);
 		}
 		state = nextState;
@@ -60,11 +61,11 @@ int algorithm(__uint32_t state, __uint8_t rule, int statelen, int wrap)
 	return 0;
 }
 
-void displayValue(__uint32_t state, int statelen)
+void displayValue(uint32_t state, int statelen)
 {
 	for (int i = 0; i < statelen; i++)
 	{
-		__uint8_t s = state >> i;
+		uint8_t s = state >> i;
 		if (s % 2)
 		{
 			printf("0");
