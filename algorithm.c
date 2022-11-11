@@ -1,10 +1,70 @@
 #include <stdio.h>
+#include "algorithm.h"
+
+int algorithm(__uint32_t state, __uint8_t rule, int statelen, int wrap)
+{
+	int generations = statelen / 2;
+	// int generations = 2;
+
+	for (int generation = 0; generation < generations; generation++)
+	{
+		displayValue(state, statelen);
+		__uint8_t lastBit;
+		__uint8_t nextBit;
+		__uint8_t currBit;
+		__uint8_t firstBit;
+		__uint8_t bits;
+		__uint32_t nextState = 0U;
+
+		if (wrap)
+			firstBit = state % 2;
+
+		for (int i = 0; i < statelen; i++)
+		{
+			if (i == 0)
+			{
+				if (wrap)
+					lastBit = (state >> statelen) % 2;
+				else
+					lastBit = 0U;
+				currBit = (state % 2);
+				nextBit = (state >> 1) % 2;
+			}
+			else if (i == statelen - 1)
+			{
+				lastBit = (state % 2);
+				currBit = (state >> 1) % 2;
+				if (wrap)
+					nextBit = firstBit;
+				else
+					nextBit = 0U;
+			}
+			else
+			{
+				lastBit = (state % 2);
+				currBit = (state >> 1) % 2;
+				nextBit = (state >> 2) % 2;
+				state = state >> 1;
+			}
+
+			__uint8_t testLastBit = lastBit << 2;
+			__uint8_t testCurrBit = currBit << 1;
+
+			bits = ((lastBit << 2) + (currBit << 1) + nextBit);
+
+			__uint8_t next = (rule >> bits) % 2;
+			nextState += (next << i);
+		}
+		state = nextState;
+	}
+	return 0;
+}
 
 void displayValue(__uint32_t state, int statelen)
 {
-	for (int i = statelen; i > 0; i--)
+	for (int i = 0; i < statelen; i++)
 	{
-		__u_int s = state >> i;
+		__uint8_t s = state >> i;
 		if (s % 2)
 		{
 			printf("0");
@@ -15,41 +75,4 @@ void displayValue(__uint32_t state, int statelen)
 		}
 	}
 	printf("\n");
-}
-
-int main()
-{
-	__uint32_t state = 1u << 15;
-	__uint8_t rule = 30;
-	int statelen = 32;
-
-	int generations = 16;
-
-	for (int generation = 0; generation < generations; generation++)
-	{
-		displayValue(state, statelen);
-		__uint32_t statecpy = state;
-		__u_int lastBit;
-		__u_int nextBit;
-		__u_int currBit;
-		__uint32_t nextState = 0;
-
-		for (int i = 0; i < statelen; i++)
-		{
-			lastBit = (statecpy % 2);
-			currBit = (statecpy >> 1) % 2;
-			nextBit = (statecpy >> 2) % 2;
-
-			__u_int bits = (lastBit << 2) + (currBit << 1) + nextBit;
-			// printf("bit: %d\n", bits);
-
-			__u_int next = (rule >> bits) % 2;
-			// printf("%d\n", next);
-			nextState += (next << i);
-
-			statecpy = statecpy >> 1;
-		}
-		state = nextState << 1;
-	}
-	return 0;
 }
