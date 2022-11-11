@@ -4,6 +4,6 @@
 
 int main()
 {
-	algorithm(1U << 15, 90, 32, 0);
+	algorithm(1U << 31, 30, 64, 0);
 	return 0;
 }

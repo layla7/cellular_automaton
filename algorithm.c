@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include "algorithm.h"
 
-int algorithm(uint32_t state, uint8_t rule, int statelen, int wrap)
+int algorithm(uint_c state, uint8_t rule, int statelen, int wrap)
 {
 	int generations = statelen / 2;
 	// int generations = 2;
@@ -15,7 +15,8 @@ int algorithm(uint32_t state, uint8_t rule, int statelen, int wrap)
 		uint8_t currBit;
 		uint8_t firstBit;
 		uint8_t bits;
-		uint32_t nextState = 0U;
+		uint8_t next;
+		uint_c nextState = 0U;
 
 		if (wrap)
 			firstBit = state % 2;
@@ -48,20 +49,17 @@ int algorithm(uint32_t state, uint8_t rule, int statelen, int wrap)
 				state = state >> 1;
 			}
 
-			uint8_t testLastBit = lastBit << 2;
-			uint8_t testCurrBit = currBit << 1;
-
 			bits = ((lastBit << 2) + (currBit << 1) + nextBit);
 
-			uint8_t next = (rule >> bits) % 2;
-			nextState += (next << i);
+			next = (rule >> bits) % 2;
+			nextState += ((uint_c)next << i);
 		}
 		state = nextState;
 	}
 	return 0;
 }
 
-void displayValue(uint32_t state, int statelen)
+void displayValue(uint_c state, int statelen)
 {
 	for (int i = 0; i < statelen; i++)
 	{

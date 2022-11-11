@@ -1,2 +1,4 @@
-void displayValue(uint32_t state, int statelen);
-int algorithm(uint32_t state, uint8_t rule, int statelen, int wrap);
+typedef uint64_t uint_c;
+
+void displayValue(uint_c state, int statelen);
+int algorithm(uint_c state, uint8_t rule, int statelen, int wrap);
