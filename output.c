@@ -1,6 +1,13 @@
+#ifdef _MSC_VER
+#define _CRT_SECURE_NO_WARNINGS
+#define _CRT_SECURE_NO_DEPRECATE  
+#define _CRT_NONSTDC_NO_DEPRECATE
+#endif
+
+#include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>
 #include <stdint.h>
-#include <string.h>
 #include "algorithm.h"
 #include "output.h"
 
@@ -13,7 +20,7 @@
  **/
 void displayGenerations(uint_c *pGens, int generations, int statelen)
 {
-	if (pGens == NULL)
+  if (pGens == NULL)
 	{
 		printf("displayGenerations received null pointer, Exiting");
 		exit(1);
@@ -24,7 +31,7 @@ void displayGenerations(uint_c *pGens, int generations, int statelen)
 		printf("displayGenerations received invalid state length");
 		exit(1);
 	}
-
+  
 	for (int gen = 0; gen < generations; gen++)
 	{
 		// loop through each bit, if the bit is 1: print `ONE` (defined in output.h), if the bit is 0, print `ZERO` (also defined in output.h)
@@ -54,7 +61,7 @@ void displayGenerations(uint_c *pGens, int generations, int statelen)
  **/
 void saveToFile(uint_c *pGens, int generations, int statelen, char *filename)
 {
-	if (pGens == NULL || filename == NULL)
+  if (pGens == NULL || filename == NULL)
 	{
 		printf("saveToFile received null pointer, Exiting");
 		exit(1);
@@ -98,7 +105,7 @@ void saveToFile(uint_c *pGens, int generations, int statelen, char *filename)
  **/
 void loadFromFile(uint_c *pGens, int generations, char *filename)
 {
-	if (pGens == NULL || filename == NULL)
+  	if (pGens == NULL || filename == NULL)
 	{
 		printf("loadFromFile received null pointer, Exiting");
 		exit(1);
