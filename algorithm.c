@@ -4,15 +4,24 @@
 #include <stdint.h>
 #include "algorithm.h"
 
-// algorithm function to perform the evolution algorithm
-// state uses custom datatype to make changing the width simpler
+/** algorithm function to perform the evolution algorithm
+ *  state uses custom datatype to make changing the width simpler
+ * @param state: the initial state of the automaton
+ * @param rule: the rule to use when running the automaton
+ * @param statelen: the size of the state (in bits)
+ * @param generations: the number of generations to run for
+ * @param wrap: boolean value, if false, there is no wrapping, if true the left/right sides wrap to each other
+ * @param output: pointer to array to output data to (can be input to any of the display/save functions in output.c)
+ *
+ * @returns void
+ **/
 void algorithm(uint_c state, uint8_t rule, int statelen, int generations, int wrap, uint_c *output)
 {
 
 	for (int generation = 0; generation < generations; generation++)
 	{
 		output[generation] = state;
-		// define some varibales;
+		// define some varibales to be used later
 		uint8_t lastBit;
 		uint8_t nextBit;
 		uint8_t currBit;
@@ -26,6 +35,9 @@ void algorithm(uint_c state, uint8_t rule, int statelen, int generations, int wr
 
 		for (int i = 0; i < statelen; i++)
 		{
+			// NOTE: The state variable always lags one behind i, this is because bit-shifting right may lose data,
+			// the 1st bit in `state` is always the (i-1)th bit in the original state variable
+
 			if (i == 0) // if currently on the first bit, imply 0 outside of the width or wrap to the last bit
 			{
 				if (wrap)
@@ -58,12 +70,6 @@ void algorithm(uint_c state, uint8_t rule, int statelen, int generations, int wr
 			next = (rule >> bits) % 2;		  // get the bits th bit of the rule (i.e. if bits is 4, get the value of the 4th bit in the rule)
 			nextState += ((uint_c)next << i); // update the next state of the automaton
 		}
-		state = nextState;
+		state = nextState; // update the state
 	}
-	// return 0;
-}
-
-int calculateGenerations(int statelen)
-{
-	return statelen / 2;
 }
