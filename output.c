@@ -1,11 +1,20 @@
+
+#ifdef _MSC_VER
+#define _CRT_SECURE_NO_WARNINGS
+#define _CRT_SECURE_NO_DEPRECATE  
+#define _CRT_NONSTDC_NO_DEPRECATE
+#endif
+
+#include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>
 #include <stdint.h>
-#include <string.h>
 #include "algorithm.h"
 #include "output.h"
 
+
 // function to display a binary value
-void displayGenerations(uint_c *pGens, int generations, int statelen)
+void displayGenerations(uint_c* pGens, int generations, int statelen)
 {
 	for (int gen = 0; gen < generations; gen++)
 	{
@@ -26,9 +35,9 @@ void displayGenerations(uint_c *pGens, int generations, int statelen)
 	}
 }
 
-void saveToFile(uint_c *pGens, int generations, int statelen, char *filename)
+void saveToFile(uint_c* pGens, int generations, int statelen, char* filename)
 {
-	FILE *fp;
+	FILE* fp;
 	fp = fopen(filename, "w");
 	for (int gen = 0; gen < generations; gen++)
 	{
@@ -49,9 +58,9 @@ void saveToFile(uint_c *pGens, int generations, int statelen, char *filename)
 	}
 }
 
-void loadFromFile(uint_c *pGens, int generations, char *filename)
+void loadFromFile(uint_c* pGens, int generations, char* filename)
 {
-	FILE *fp;
+	FILE* fp;
 	fp = fopen(filename, "r");
 	char c;
 
@@ -65,7 +74,6 @@ void loadFromFile(uint_c *pGens, int generations, char *filename)
 
 	while ((c = fgetc(fp)) != EOF)
 	{
-		// printf("%c\n", c);
 		if (c == '\n')
 		{
 			lineCounter++;

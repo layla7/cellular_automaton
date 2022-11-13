@@ -1,6 +1,30 @@
-// custom type definition to make it simple to change the width seen
+#ifndef __ALGORITHM_HEADER__ // this is a 'guard' on the header file, to prevent it's contents from
+#define __ALGORITHM_HEADER__ // being redefined more than once during the build process
+
+#include <stdio.h>
+#include <stdint.h>
+#include <stdbool.h>
+
 typedef uint64_t uint_c;
 
-// function definitions
-void algorithm(uint_c state, uint8_t rule, int statelen, int generations, int wrap, uint_c *output);
+typedef struct algoValues
+{
+	
+	uint_c state;
+	uint8_t rule;
+	int statelen;
+	int generations;
+	bool wrap;
+	uint_c output;
+} AlgoValues;
+
+
+void algorithm(uint_c state, uint8_t rule, int statelen, int generations, bool wrap, uint_c* output);
 int calculateGenerations(int statelen);
+int menu();
+int menuDisplay();
+
+AlgoValues editValues(AlgoValues data);
+
+
+#endif

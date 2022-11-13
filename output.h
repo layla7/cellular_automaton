@@ -8,6 +8,6 @@
 
 #endif
 
-void displayGenerations(uint_c *pGens, int generations, int statelen);
-void saveToFile(uint_c *pGens, int generations, int statelen, char *filename);
-void loadFromFile(uint_c *pGens, int generations, char *filename);
+void displayGenerations(uint_c* pGens, int generations, int statelen);
+void saveToFile(uint_c* pGens, int generations, int statelen, char* filename);
+void loadFromFile(uint_c* pGens, int generations, char* filename);
