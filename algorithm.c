@@ -8,8 +8,17 @@
 #include <stdbool.h>
 
 
-// algorithm function to perform the evolution algorithm
-// state uses custom datatype to make changing the width simpler
+/** algorithm function to perform the evolution algorithm
+ *  state uses custom datatype to make changing the width simpler
+ * @param state: the initial state of the automaton
+ * @param rule: the rule to use when running the automaton
+ * @param statelen: the size of the state (in bits)
+ * @param generations: the number of generations to run for
+ * @param wrap: boolean value, if false, there is no wrapping, if true the left/right sides wrap to each other
+ * @param output: pointer to array to output data to (can be input to any of the display/save functions in output.c)
+ *
+ * @returns void
+ **/
 void algorithm(uint_c state, uint8_t rule, int statelen, int generations, bool wrap, uint_c* output)
 {
 	int generation = 0;
