@@ -13,6 +13,18 @@
  **/
 void displayGenerations(uint_c *pGens, int generations, int statelen)
 {
+	if (pGens == NULL)
+	{
+		printf("displayGenerations received null pointer, Exiting");
+		exit(1);
+	}
+
+	if (statelen > 64)
+	{
+		printf("displayGenerations received invalid state length");
+		exit(1);
+	}
+
 	for (int gen = 0; gen < generations; gen++)
 	{
 		// loop through each bit, if the bit is 1: print `ONE` (defined in output.h), if the bit is 0, print `ZERO` (also defined in output.h)
@@ -42,6 +54,18 @@ void displayGenerations(uint_c *pGens, int generations, int statelen)
  **/
 void saveToFile(uint_c *pGens, int generations, int statelen, char *filename)
 {
+	if (pGens == NULL || filename == NULL)
+	{
+		printf("saveToFile received null pointer, Exiting");
+		exit(1);
+	}
+
+	if (statelen > 64)
+	{
+		printf("saveToFile received invalid state length");
+		exit(1);
+	}
+
 	// open file
 	FILE *fp;
 	fp = fopen(filename, "w");
@@ -74,6 +98,12 @@ void saveToFile(uint_c *pGens, int generations, int statelen, char *filename)
  **/
 void loadFromFile(uint_c *pGens, int generations, char *filename)
 {
+	if (pGens == NULL || filename == NULL)
+	{
+		printf("loadFromFile received null pointer, Exiting");
+		exit(1);
+	}
+
 	// setup filepointer and char variable
 	FILE *fp;
 	fp = fopen(filename, "r");

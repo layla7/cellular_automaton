@@ -17,6 +17,11 @@
  **/
 void algorithm(uint_c state, uint8_t rule, int statelen, int generations, int wrap, uint_c *output)
 {
+	if (output == NULL)
+	{
+		printf("Algorithm received null pointer. Exiting");
+		exit(1);
+	}
 
 	for (int generation = 0; generation < generations; generation++)
 	{
