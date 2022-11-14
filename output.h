@@ -1,3 +1,10 @@
+/**
+ * Group 12
+ * 
+ * Alba Henderson (2488560)
+ * Lowrie Mouat (2481347)
+ * Oscar Morris (2497790)
+*/
 #include "algorithm.h"
 
 #ifndef __OUTPUT_H

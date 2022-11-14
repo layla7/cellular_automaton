@@ -1,3 +1,10 @@
+/**
+ * Group 12
+ * 
+ * Alba Henderson (2488560)
+ * Lowrie Mouat (2481347)
+ * Oscar Morris (2497790)
+*/
 #ifndef __ALGORITHM_HEADER__ // this is a 'guard' on the header file, to prevent it's contents from
 #define __ALGORITHM_HEADER__ // being redefined more than once during the build process
 

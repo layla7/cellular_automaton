@@ -1,3 +1,11 @@
+/**
+ * Group 12
+ * 
+ * Alba Henderson (2488560)
+ * Lowrie Mouat (2481347)
+ * Oscar Morris (2497790)
+*/
+
 #ifdef _MSC_VER
 #define _CRT_SECURE_NO_WARNINGS
 #endif
