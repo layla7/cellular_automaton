@@ -4,8 +4,11 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 #include "algorithm.h"
 #include <stdbool.h>
+#include <math.h>
+#include <ctype.h>
 
 
 /** algorithm function to perform the evolution algorithm
@@ -134,21 +137,119 @@ AlgoValues editValues(AlgoValues data)
 	}
 	printf("Width of the display is %d\n\n", tempValues.statelen);
 
-	printf("please enter a value between 1-64 for the state;\n"); //need a better word than state
-	printf("Default value: half the size of the width;\n");
-	if (scanf("%u", &userInputUInt32) != 0);
-	if (userInputUInt32 == -1)
-	{
-		tempValues.state = tempValues.statelen / 2;
+	//printf("please enter a value between 1-64 for the state;\n"); //need a better word than state
+	printf("Would you like to enter your starting line in decimal or binary?\n");
+	printf("Enter 1 for decimal\n");
+	printf("Enter 0 for binary\n");
+	printf("Enter any other value and the program will default to decimal\n");
+
+	if(scanf("%u",&userInputSInt) != 0);
+	if(userInputSInt == 0){
+		//Binary to decimal conversion from https://www.programiz.com/c-programming/examples/binary-decimal-convert
+		long long n;
+		printf("Enter the binary of 32 bits at most now\n");
+		if(scanf("%u", &userInputSInt) != 0);
+		n=userInputSInt;
+		int dec = 0, i = 0, rem;
+
+		while (n!=0){
+			rem = n % 10;
+			n /= 10;
+			dec += rem * pow(2, i);
+			++i;
+		}
+		if(dec < 0 || dec > 2147483648){
+			printf("Invalid binary number, setting to default value");
+			tempValues.state = tempValues.statelen / 2;
+		}
+		tempValues.state = dec;
 	}
-	else if (userInputUInt32 >= 1 && userInputUInt32 <= tempValues.statelen)
-	{
-		tempValues.state = userInputUInt32;
-	}
-	else
-	{
-		printf("Input %u out of bounds, reverting to default", userInputUInt32);
-		tempValues.state = tempValues.statelen / 2;
+	else{
+		if(tempValues.statelen >= 32){
+			printf("Please enter a positive decimal less than 2,147,483,648\n");
+			if (scanf("%u", &userInputUInt32) != 0);
+			if (userInputUInt32 == -1){
+				tempValues.state = tempValues.statelen / 2;
+			}
+			else if (userInputUInt32 < 2147483648 && userInputUInt32 >= 0 ){
+				tempValues.state = userInputUInt32;
+			}
+			else{
+			printf("Input %u out of bounds, reverting to default", userInputUInt32);
+				tempValues.state = tempValues.statelen / 2;
+			}
+		}
+		else if(tempValues.statelen >= 16){
+			printf("Please enter a positive decimal less than 65,536\n");
+			if (scanf("%u", &userInputUInt32) != 0);
+			if (userInputUInt32 == -1){
+				tempValues.state = tempValues.statelen / 2;
+			}
+			else if (userInputUInt32 < 65536 && userInputUInt32 >= 0 ){
+				tempValues.state = userInputUInt32;
+			}
+			else{
+			printf("Input %u out of bounds, reverting to default", userInputUInt32);
+				tempValues.state = tempValues.statelen / 2;
+			}
+		}
+			else if(tempValues.statelen >= 8){
+			printf("Please enter a positive decimal less than 256\n");
+			if (scanf("%u", &userInputUInt32) != 0);
+			if (userInputUInt32 == -1){
+				tempValues.state = tempValues.statelen / 2;
+			}
+			else if (userInputUInt32 < 256 && userInputUInt32 >= 0 ){
+				tempValues.state = userInputUInt32;
+			}
+			else{
+			printf("Input %u out of bounds, reverting to default\n", userInputUInt32);
+				tempValues.state = tempValues.statelen / 2;
+			}
+		}
+		else if(tempValues.statelen >= 4){
+			printf("Please enter a positive decimal less than 16\n");
+			if (scanf("%u", &userInputUInt32) != 0);
+			if (userInputUInt32 == -1){
+				tempValues.state = tempValues.statelen / 2;
+			}
+			else if (userInputUInt32 < 16 && userInputUInt32 >= 0 ){
+				tempValues.state = userInputUInt32;
+			}
+			else{
+			printf("Input %u out of bounds, reverting to default\n", userInputUInt32);
+				tempValues.state = tempValues.statelen / 2;
+			}
+		}
+		else if(tempValues.statelen >= 2){
+			printf("Please enter a positive decimal less than 4\n");
+			if (scanf("%u", &userInputUInt32) != 0);
+			if (userInputUInt32 == -1){
+				tempValues.state = tempValues.statelen / 2;
+			}
+			else if (userInputUInt32 < 4 && userInputUInt32 >= 0 ){
+				tempValues.state = userInputUInt32;
+			}
+			else{
+			printf("Input %u out of bounds, reverting to default", userInputUInt32);
+				tempValues.state = tempValues.statelen / 2;
+			}
+		}
+		else{
+			printf("Please enter a positive decimal either 1 or 0\n");
+			if (scanf("%u", &userInputUInt32) != 0);
+			if (userInputUInt32 == -1){
+				tempValues.state = tempValues.statelen / 2;
+			}
+			else if (userInputUInt32 < 1 && userInputUInt32 >= 0 ){
+				tempValues.state = userInputUInt32;
+			}
+			else{
+			printf("Input %u out of bounds, reverting to default", userInputUInt32);
+				tempValues.state = tempValues.statelen / 2;
+			}
+		}
+
 	}
 	printf("Start position is %u\n\n", tempValues.state);
 
@@ -194,7 +295,7 @@ AlgoValues editValues(AlgoValues data)
 		printf("wrapping is off");
 	}
 
-	printf("please enter a value between 1-64 for the Generation;\n"); //need a better word than state
+	printf("please enter a value between 1-64 for the Generation;\n");
 	printf("Default value: half the size of the width;\n");
 	if (scanf("%u", &userInputUInt32) != 0);
 	if (userInputUInt32 == -1)
