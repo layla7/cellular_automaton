@@ -12,22 +12,26 @@
 #include "algorithm.h"
 #include "output.h"
 
+/**
+ * @returns int
+*/
 int main()
 {
 	menu();
 	return 0;
 }
 
-//int algorithm(uint32_t state, uint8_t rule, int statelen, int wrap)
-//algorithm(1U << 15, 45, 32, 0)
 
-
-
+/**
+ * Processing user input and calling the corresponding functions.
+ * @returns int
+*/
 int menu()
 {
 	bool quit = false;
 	int choice = 0;
 
+	//Declaring variables for AlgoValues
 	uint8_t rule = 30;
 	int statelen = 32;
 	uint_c state = statelen / 2;
@@ -37,6 +41,7 @@ int menu()
 	ptr = malloc(sizeof(uint_c) * generations);
 	AlgoValues* data = NULL;
 
+	//Allocating space for AlgoValues datatype and initialising variables
 	data = (AlgoValues*)malloc(sizeof(AlgoValues));
 	if (data != NULL)
 	{
@@ -52,23 +57,24 @@ int menu()
 		printf("memory allocation error\n");
 		return 104;
 	}
-	//menuDisplay();
 
 	while (quit == false)
 	{
 		menuDisplay();
 
-
+		//take user input for menu choice
 		if ((scanf("%d", &choice)) != 0)
 		{
 			switch (choice)
 			{
 			case 1:
+				//calls function to run main algorithm
 				algorithm(state, rule, statelen, generations, wrap, ptr);
 				displayGenerations(ptr, generations, statelen);
 				break;
 
 			case 2:
+				//calls function to set AlgoValues
 				*data = editValues(*data);
 				state = data->state;
 				rule = data->rule;
@@ -78,15 +84,17 @@ int menu()
 				break;
 
 			case 3:
+				//calls function to save algorithm output to file
 				saveToFile(ptr, generations, statelen, "testfile.txt");
 				break;
 				
 			case 4:
+				//loads algorithm output from text file
 				loadFromFile(ptr, generations, "testfile.txt");
 				displayGenerations(ptr, generations, statelen);
 				break;
 			case 5:
-
+				//exits program
 				quit = true;
 				exit(0);
 				break;
@@ -98,6 +106,10 @@ int menu()
 	return 0;
 }
 
+/**
+ * Displays menu options to user.
+ * @returns int
+*/
 int menuDisplay()
 {
 	printf("Please input your choice with the keyboard\n");
