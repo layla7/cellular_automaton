@@ -125,7 +125,7 @@ AlgoValues editValues(AlgoValues data)
 	}
 	else if (userInputSInt >= 1 && userInputSInt <= 64)
 	{
-
+		tempValues.statelen = userInputSInt;
 	}
 	else
 	{
@@ -141,7 +141,7 @@ AlgoValues editValues(AlgoValues data)
 	{
 		tempValues.state = tempValues.statelen / 2;
 	}
-	else if (userInputUInt32 >= 1 && userInputUInt32 <= 64)
+	else if (userInputUInt32 >= 1 && userInputUInt32 <= tempValues.statelen)
 	{
 		tempValues.state = userInputUInt32;
 	}
@@ -150,20 +150,20 @@ AlgoValues editValues(AlgoValues data)
 		printf("Input %u out of bounds, reverting to default", userInputUInt32);
 		tempValues.state = tempValues.statelen / 2;
 	}
-	printf("Start position is %u\n\n", tempValues.statelen);
+	printf("Start position is %u\n\n", tempValues.state);
 
 	printf("please enter a value between 1-255 for the cellular automata rule\n");
 	printf("Default value: 30;\n");
-	//sscanf("%d", &userInputUInt8);
-	if (scanf("%hhu", &userInputUInt8) != 0);
+	//sscanf("%d", &userInputUInt32);
+	if (scanf("%u", &userInputUInt32) != 0);
 
-	if (userInputUInt8 == -1)
+	if (userInputUInt32 == -1)
 	{
 		tempValues.rule = 30;
 	}
-	else if (userInputUInt8 >= 1 && userInputUInt8 <= 255)
+	else if (userInputUInt32 >= 1 && userInputUInt32 <= 255)
 	{
-		tempValues.rule = userInputUInt8;
+		tempValues.rule = userInputUInt32;
 	}
 	else
 	{
@@ -210,7 +210,7 @@ AlgoValues editValues(AlgoValues data)
 		printf("Input %u out of bounds, reverting to default", userInputUInt32);
 		tempValues.generations = tempValues.statelen / 2;
 	}
-	printf("Start position is %u\n\n", tempValues.generations);
+	printf("Generations is %u\n\n", tempValues.generations);
 
 	printf("All values set!");
 	return tempValues;
