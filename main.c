@@ -14,16 +14,6 @@
 
 int main()
 {
-	/*int statelen = 32;
-	int generations = calculateGenerations(statelen);
-	uint_c* ptr = NULL;
-	ptr = malloc(sizeof(uint_c) * generations);
-	// algorithm(1U << 15, 30, statelen, generations, 0, ptr);
-	// displayGenerations(ptr, generations, statelen);
-	// saveToFile(ptr, generations, statelen, "testfile.txt");
-
-	loadFromFile(ptr, generations, "testfile.txt");
-	displayGenerations(ptr, generations, statelen);*/
 	menu();
 	return 0;
 }
@@ -51,7 +41,7 @@ int menu()
 	if (data != NULL)
 	{
 		data->statelen = 32;
-		data->state = 500;
+		data->state = data->statelen / 2;
 		data->generations = data->statelen / 2;
 		data->rule = 30;
 		data->wrap = false;
