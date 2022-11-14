@@ -24,7 +24,6 @@ int main()
 
 	loadFromFile(ptr, generations, "testfile.txt");
 	displayGenerations(ptr, generations, statelen);*/
-	//printf("FUCKING PLEASE");
 	menu();
 	return 0;
 }
@@ -52,7 +51,7 @@ int menu()
 	if (data != NULL)
 	{
 		data->statelen = 32;
-		data->state = data->statelen / 2;
+		data->state = 500;
 		data->generations = data->statelen / 2;
 		data->rule = 30;
 		data->wrap = false;
@@ -63,7 +62,7 @@ int menu()
 		printf("memory allocation error\n");
 		return 104;
 	}
-	menuDisplay();
+	//menuDisplay();
 
 	while (quit == false)
 	{
@@ -85,6 +84,7 @@ int menu()
 				rule = data->rule;
 				statelen = data->statelen;
 				wrap = data->wrap;
+				generations = data->generations;
 				break;
 
 			case 3:
