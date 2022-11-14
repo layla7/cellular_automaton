@@ -9,11 +9,11 @@
 #include <stdbool.h>
 #include <math.h>
 #include <ctype.h>
-
+#include <string.h>
 
 /** algorithm function to perform the evolution algorithm
  *  state uses custom datatype to make changing the width simpler
- * @param state: the initial state of the automaton
+ * @param initialState: the initial state of the automaton
  * @param rule: the rule to use when running the automaton
  * @param statelen: the size of the state (in bits)
  * @param generations: the number of generations to run for
@@ -22,14 +22,24 @@
  *
  * @returns void
  **/
-void algorithm(uint_c state, uint8_t rule, int statelen, int generations, bool wrap, uint_c* output)
+void algorithm(uint_c initialState, uint8_t rule, int statelen, int generations, bool wrap, uint_c *output)
 {
-  if (output == NULL)
+	// check for NULL pointer input
+	if (output == NULL)
 	{
 		printf("Algorithm received null pointer. Exiting");
 		exit(1);
 	}
 
+	// reverse the initialState
+	uint_c state = 0;
+
+	for (int i = 0; i < statelen; i++)
+	{
+		state += ((initialState >> i) % 2) << (statelen - i);
+	}
+
+	// loop through each generation
 	int generation = 0;
 	for (generation = 0; generation < generations; generation++)
 	{
@@ -89,26 +99,28 @@ void algorithm(uint_c state, uint8_t rule, int statelen, int generations, bool w
  * Function for user to set values to change the outcome of the evolution algorithm.
  * @param data struct containing relevant values to the algorithm.
  * @returns tempValues holder for user inputs.
-*/
+ */
 AlgoValues editValues(AlgoValues data)
 {
 
-	//define some variables
+	// define some variables
 	int userInputSInt = 0;
 	uint8_t userInputUInt8 = 0;
 	uint32_t userInputUInt32 = 0;
-	
+	uint_c userInputUIntC = 0;
+
 	AlgoValues tempValues = data;
 
 	printf("Please follow the instructions on screen\n");
 	printf("if you wish for default values, enter -1\n");
 	printf("Any values out of bounds will be set to default\n\n");
 
-	//ask for display width
+	// ask for display width
 	printf("please enter a value between 1-64 for the width of display;\n");
 	printf("Default value: 32;\n");
-	//validate input
-	if (scanf("%d", &userInputSInt) != 0);
+	// validate input
+	if (scanf("%d", &userInputSInt) != 0)
+		;
 	if (userInputSInt == -1)
 	{
 		tempValues.statelen = 32;
@@ -124,61 +136,64 @@ AlgoValues editValues(AlgoValues data)
 	}
 	printf("Width of the display is %d\n\n", tempValues.statelen);
 
-	//check whether user wants to enter state in binary or decimal
+	// check whether user wants to enter state in binary or decimal
 	printf("Would you like to enter your starting line in decimal or binary?\n");
 	printf("Enter 1 for decimal\n");
 	printf("Enter 0 for binary\n");
 	printf("Enter any other value and the program will default to decimal\n");
 
-	if(scanf("%u",&userInputSInt) != 0);
-	//binary
-	if(userInputSInt == 0){
-		//Binary to decimal conversion from https://www.programiz.com/c-programming/examples/binary-decimal-convert
-		long long n;
-		//user enters binary number
-		printf("Enter the binary of 32 bits at most now\n");
-		if(scanf("%u", &userInputSInt) != 0);
-		n=userInputSInt;
-		int dec = 0, i = 0, rem;
+	if (scanf("%u", &userInputSInt) != 0)
+		;
+	// binary
+	if (userInputSInt == 0)
+	{
+		uint_c dec = 0;
+		char userInputStr64[64];
+		// user enters binary number
+		printf("Enter the binary of %d bits at most now\n", tempValues.statelen);
+		if (scanf("%s", userInputStr64) != 0)
+			;
 
-		while (n!=0){
-			rem = n % 10;
-			n /= 10;
-			dec += rem * pow(2, i);
-			++i;
+		// convert binary string to integer
+		for (int i = 0; i < strlen(userInputStr64); i++)
+		{
+			if (userInputStr64[i] == '1')
+			{
+				dec += (1u << (strlen(userInputStr64) - i - 1));
+			}
 		}
-
-		if(dec < 0 || dec > 2147483648){
-			printf("Invalid binary number, setting to default value");
-			tempValues.state = tempValues.statelen / 2;
-		}
-		//set the state to be the converted binary
 		tempValues.state = dec;
 	}
 
-	//decimal
-	else{
-			printf("Please enter a positive decimal\n");
-			//user enters decimal number
-			if (scanf("%u", &userInputUInt32) != 0);
-			if (userInputUInt32 == -1){
-				tempValues.state = tempValues.statelen / 2;
-			}
-			else if (userInputUInt32 >= 0 ){
-				tempValues.state = userInputUInt32;
-			}
-			else{
-			printf("Input %u out of bounds, reverting to default", userInputUInt32);
-				tempValues.state = tempValues.statelen / 2;
-			}
+	// decimal
+	else
+	{
+		printf("Please enter a positive decimal\n");
+		// user enters decimal number
+		if (scanf("%lu", &userInputUIntC) != 0)
+			;
+		if (userInputUIntC == -1)
+		{
+			tempValues.state = tempValues.statelen / 2;
 		}
-	printf("You initial decimal is %u\n\n", tempValues.state);
+		else if (userInputUIntC >= 0)
+		{
+			tempValues.state = userInputUIntC;
+		}
+		else
+		{
+			printf("Input %lu out of bounds, reverting to default\n", userInputUIntC);
+			tempValues.state = (1u << (tempValues.statelen / 2));
+		}
+	}
+	printf("You initial decimal state is %lu\n\n", tempValues.state);
 
-	//set the cellular automata rule
+	// set the cellular automata rule
 	printf("please enter a value between 1-255 for the cellular automata rule\n");
 	printf("Default value: 30;\n");
 
-	if (scanf("%u", &userInputUInt32) != 0);
+	if (scanf("%u", &userInputUInt32) != 0)
+		;
 	if (userInputUInt32 == -1)
 	{
 		tempValues.rule = 30;
@@ -194,33 +209,34 @@ AlgoValues editValues(AlgoValues data)
 	}
 	printf("Rule is %u\n\n", tempValues.rule);
 
-	//set whether or not display will wrap
+	// set whether or not display will wrap
 	printf("Please select if you would like the display to wrap\n");
 	printf("Enter 1 for true\n");
 	printf("Enter 0 for false\n");
 	printf("Default value: False;\n");
 	if (scanf("%u", &userInputSInt) != 0)
-	if (userInputSInt == 1)
-	{
-		tempValues.wrap = true;
-		printf("wrapping is on\n");
-	}
-	else if (userInputSInt == 0)
-	{
-		tempValues.wrap = false;
-		printf("wrapping is off\n");
-	}
-	else
-	{
-		printf("Input %d out of bounds, reverting to default\n", userInputSInt);
-		tempValues.wrap = false;
-		printf("wrapping is off");
-	}
+		if (userInputSInt == 1)
+		{
+			tempValues.wrap = true;
+			printf("wrapping is on\n");
+		}
+		else if (userInputSInt == 0)
+		{
+			tempValues.wrap = false;
+			printf("wrapping is off\n");
+		}
+		else
+		{
+			printf("Input %d out of bounds, reverting to default\n", userInputSInt);
+			tempValues.wrap = false;
+			printf("wrapping is off");
+		}
 
-	//user sets how many times they would like to generate run the automota
+	// user sets how many times they would like to generate run the automota
 	printf("please enter how many Generations you would like the automota to go through;\n");
 	printf("Default value: half the size of the width;\n");
-	if (scanf("%u", &userInputUInt32) != 0);
+	if (scanf("%u", &userInputUInt32) != 0)
+		;
 	if (userInputUInt32 == -1)
 	{
 		tempValues.generations = tempValues.statelen / 2;
