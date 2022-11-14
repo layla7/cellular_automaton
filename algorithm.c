@@ -85,30 +85,15 @@ void algorithm(uint_c state, uint8_t rule, int statelen, int generations, bool w
 	// return 0;
 }
 
-int calculateGenerations(int statelen)
-{
-	return statelen / 2;
-}
-
-void displayValue(uint32_t state, int statelen)
-{
-	for (int i = 0; i < statelen; i++)
-	{
-		uint32_t s = state >> i;
-		if (s % 2)
-		{
-			printf("0");
-		}
-		else
-		{
-			printf(".");
-		}
-	}
-	printf("\n");
-}
-
+/**
+ * Function for user to set values to change the outcome of the evolution algorithm.
+ * @param data struct containing relevant values to the algorithm.
+ * @returns tempValues holder for user inputs.
+*/
 AlgoValues editValues(AlgoValues data)
 {
+
+	//define some variables
 	int userInputSInt = 0;
 	uint8_t userInputUInt8 = 0;
 	uint32_t userInputUInt32 = 0;
@@ -119,8 +104,10 @@ AlgoValues editValues(AlgoValues data)
 	printf("if you wish for default values, enter -1\n");
 	printf("Any values out of bounds will be set to default\n\n");
 
+	//ask for display width
 	printf("please enter a value between 1-64 for the width of display;\n");
 	printf("Default value: 32;\n");
+	//validate input
 	if (scanf("%d", &userInputSInt) != 0);
 	if (userInputSInt == -1)
 	{
@@ -137,16 +124,18 @@ AlgoValues editValues(AlgoValues data)
 	}
 	printf("Width of the display is %d\n\n", tempValues.statelen);
 
-	//printf("please enter a value between 1-64 for the state;\n"); //need a better word than state
+	//check whether user wants to enter state in binary or decimal
 	printf("Would you like to enter your starting line in decimal or binary?\n");
 	printf("Enter 1 for decimal\n");
 	printf("Enter 0 for binary\n");
 	printf("Enter any other value and the program will default to decimal\n");
 
 	if(scanf("%u",&userInputSInt) != 0);
+	//binary
 	if(userInputSInt == 0){
 		//Binary to decimal conversion from https://www.programiz.com/c-programming/examples/binary-decimal-convert
 		long long n;
+		//user enters binary number
 		printf("Enter the binary of 32 bits at most now\n");
 		if(scanf("%u", &userInputSInt) != 0);
 		n=userInputSInt;
@@ -158,20 +147,24 @@ AlgoValues editValues(AlgoValues data)
 			dec += rem * pow(2, i);
 			++i;
 		}
+
 		if(dec < 0 || dec > 2147483648){
 			printf("Invalid binary number, setting to default value");
 			tempValues.state = tempValues.statelen / 2;
 		}
+		//set the state to be the converted binary
 		tempValues.state = dec;
 	}
+
+	//decimal
 	else{
-		if(tempValues.statelen >= 32){
-			printf("Please enter a positive decimal less than 2,147,483,648\n");
+			printf("Please enter a positive decimal\n");
+			//user enters decimal number
 			if (scanf("%u", &userInputUInt32) != 0);
 			if (userInputUInt32 == -1){
 				tempValues.state = tempValues.statelen / 2;
 			}
-			else if (userInputUInt32 < 2147483648 && userInputUInt32 >= 0 ){
+			else if (userInputUInt32 >= 0 ){
 				tempValues.state = userInputUInt32;
 			}
 			else{
@@ -179,85 +172,13 @@ AlgoValues editValues(AlgoValues data)
 				tempValues.state = tempValues.statelen / 2;
 			}
 		}
-		else if(tempValues.statelen >= 16){
-			printf("Please enter a positive decimal less than 65,536\n");
-			if (scanf("%u", &userInputUInt32) != 0);
-			if (userInputUInt32 == -1){
-				tempValues.state = tempValues.statelen / 2;
-			}
-			else if (userInputUInt32 < 65536 && userInputUInt32 >= 0 ){
-				tempValues.state = userInputUInt32;
-			}
-			else{
-			printf("Input %u out of bounds, reverting to default", userInputUInt32);
-				tempValues.state = tempValues.statelen / 2;
-			}
-		}
-			else if(tempValues.statelen >= 8){
-			printf("Please enter a positive decimal less than 256\n");
-			if (scanf("%u", &userInputUInt32) != 0);
-			if (userInputUInt32 == -1){
-				tempValues.state = tempValues.statelen / 2;
-			}
-			else if (userInputUInt32 < 256 && userInputUInt32 >= 0 ){
-				tempValues.state = userInputUInt32;
-			}
-			else{
-			printf("Input %u out of bounds, reverting to default\n", userInputUInt32);
-				tempValues.state = tempValues.statelen / 2;
-			}
-		}
-		else if(tempValues.statelen >= 4){
-			printf("Please enter a positive decimal less than 16\n");
-			if (scanf("%u", &userInputUInt32) != 0);
-			if (userInputUInt32 == -1){
-				tempValues.state = tempValues.statelen / 2;
-			}
-			else if (userInputUInt32 < 16 && userInputUInt32 >= 0 ){
-				tempValues.state = userInputUInt32;
-			}
-			else{
-			printf("Input %u out of bounds, reverting to default\n", userInputUInt32);
-				tempValues.state = tempValues.statelen / 2;
-			}
-		}
-		else if(tempValues.statelen >= 2){
-			printf("Please enter a positive decimal less than 4\n");
-			if (scanf("%u", &userInputUInt32) != 0);
-			if (userInputUInt32 == -1){
-				tempValues.state = tempValues.statelen / 2;
-			}
-			else if (userInputUInt32 < 4 && userInputUInt32 >= 0 ){
-				tempValues.state = userInputUInt32;
-			}
-			else{
-			printf("Input %u out of bounds, reverting to default", userInputUInt32);
-				tempValues.state = tempValues.statelen / 2;
-			}
-		}
-		else{
-			printf("Please enter a positive decimal either 1 or 0\n");
-			if (scanf("%u", &userInputUInt32) != 0);
-			if (userInputUInt32 == -1){
-				tempValues.state = tempValues.statelen / 2;
-			}
-			else if (userInputUInt32 < 1 && userInputUInt32 >= 0 ){
-				tempValues.state = userInputUInt32;
-			}
-			else{
-			printf("Input %u out of bounds, reverting to default", userInputUInt32);
-				tempValues.state = tempValues.statelen / 2;
-			}
-		}
+	printf("You initial decimal is %u\n\n", tempValues.state);
 
-	}
-	printf("Start position is %u\n\n", tempValues.state);
-
+	//set the cellular automata rule
 	printf("please enter a value between 1-255 for the cellular automata rule\n");
 	printf("Default value: 30;\n");
-	//sscanf("%d", &userInputUInt32);
-	if (scanf("%u", &userInputUInt32) != 0);
 
+	if (scanf("%u", &userInputUInt32) != 0);
 	if (userInputUInt32 == -1)
 	{
 		tempValues.rule = 30;
@@ -273,6 +194,7 @@ AlgoValues editValues(AlgoValues data)
 	}
 	printf("Rule is %u\n\n", tempValues.rule);
 
+	//set whether or not display will wrap
 	printf("Please select if you would like the display to wrap\n");
 	printf("Enter 1 for true\n");
 	printf("Enter 0 for false\n");
@@ -295,14 +217,15 @@ AlgoValues editValues(AlgoValues data)
 		printf("wrapping is off");
 	}
 
-	printf("please enter a value between 1-64 for the Generation;\n");
+	//user sets how many times they would like to generate run the automota
+	printf("please enter how many Generations you would like the automota to go through;\n");
 	printf("Default value: half the size of the width;\n");
 	if (scanf("%u", &userInputUInt32) != 0);
 	if (userInputUInt32 == -1)
 	{
 		tempValues.generations = tempValues.statelen / 2;
 	}
-	else if (userInputUInt32 >= 1 && userInputUInt32 <= 64)
+	else if (userInputUInt32 >= 1)
 	{
 		tempValues.generations = userInputUInt32;
 	}
